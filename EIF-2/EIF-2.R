@@ -9,7 +9,7 @@ library(dplyr)
 
 ## Add fonts
 
-font_add_google("Righteous", family = "clim")
+font_add_google("EB Garamond", family = "clim")
 font_add_google("Montserrat", family = "mont")
 
 showtext_auto()
@@ -29,13 +29,15 @@ colnames(eu_map)[1] = "geo"
 
 ## Add observations
 
-unemployment_labor_force <- read_csv("EIF-1/tps00203_page_linear.csv") %>%
+expenditure_rd <- read_csv("EIF-2/expenditure_rd.csv") %>%
+  filter(TIME_PERIOD == 2021 & sectperf == "TOTAL") %>%
   select(geo, OBS_VALUE)
 
 
 ## Merge 
 
-merged_dataset = left_join(eu_map, unemployment_labor_force, by = "geo")
+merged_dataset = left_join(eu_map, expenditure_rd, by = "geo")
+
 
 
 
@@ -43,15 +45,15 @@ merged_dataset = left_join(eu_map, unemployment_labor_force, by = "geo")
 
 map = ggplot2::ggplot(data = merged_dataset) +
   geom_sf(aes(fill = OBS_VALUE)) +
-  coord_sf(xlim = c(-10,35), ylim = c(35, 70)) +
+  coord_sf(xlim = c(-21.5,35), ylim = c(35, 70)) +
   geom_sf_text(aes(label = OBS_VALUE),
-               colour = "black", 
+               colour = "black",
                size = 10,
                family="mont") +
-  scale_fill_gradient(low='white', high='#ff6242') +
+  scale_fill_gradient(low='white', high='yellow2') +
   labs(
-    title = "Unemployment",
-    subtitle = "Unemployed persons as a percentage of the labour force, 2022",
+    title = "Expenditure on Research and Development",
+    subtitle = "Percentage of Gross Domestic Product invested on R&D, 2021",
     caption = "**stesiam** | Source: Eurostat"
   ) +
   theme_void()+
@@ -63,10 +65,10 @@ map = ggplot2::ggplot(data = merged_dataset) +
   )
 
 ggsave(
-  filename = "EIF-1/EIF-1.png",
+  filename = "EIF-2/EIF-2.png",
   plot = map,
   device = "png",
-  bg = "#abcedf",
+  bg = "white",
   height = 7,
   width = 7)
 
