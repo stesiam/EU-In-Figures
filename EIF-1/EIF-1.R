@@ -43,7 +43,7 @@ merged_dataset = left_join(eu_map, unemployment_labor_force, by = "geo")
 
 map = ggplot2::ggplot(data = merged_dataset) +
   geom_sf(aes(fill = OBS_VALUE)) +
-  coord_sf(xlim = c(-10,35), ylim = c(35, 70)) +
+  coord_sf(xlim = c(-21.5,35), ylim = c(35, 70)) +
   geom_sf_text(aes(label = OBS_VALUE),
                colour = "black", 
                size = 10,
@@ -66,7 +66,7 @@ ggsave(
   filename = "EIF-1/EIF-1.png",
   plot = map,
   device = "png",
-  bg = "#abcedf",
+  bg = "#52b2bf",
   height = 7,
   width = 7)
 
