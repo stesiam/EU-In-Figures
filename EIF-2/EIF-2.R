@@ -18,7 +18,7 @@ showtext_auto()
 ## Read shapefile
 
 eu_map = st_read("Shapefiles/EU_Map_2020_RG/CNTR_RG_20M_2020_4326.shp") 
-
+eu_map <- st_transform(eu_map, crs = 3035)
 
 eu_map = eu_map %>%
   dplyr::filter(EU_STAT == "T" | EFTA_STAT == "T") %>%
@@ -26,7 +26,11 @@ eu_map = eu_map %>%
 
 colnames(eu_map)[1] = "geo"
 
-
+eu_map  %>% 
+  ggplot() +
+  geom_sf() +
+  scale_x_continuous(limits = c(2800000, 7150000)) +
+  scale_y_continuous(limits = c(1380000, 5300000)) 
 ## Add observations
 
 expenditure_rd <- read_csv("EIF-2/expenditure_rd.csv") %>%
@@ -45,7 +49,8 @@ merged_dataset = left_join(eu_map, expenditure_rd, by = "geo")
 
 map = ggplot2::ggplot(data = merged_dataset) +
   geom_sf(aes(fill = OBS_VALUE)) +
-  coord_sf(xlim = c(-21.5,35), ylim = c(35, 70)) +
+  scale_x_continuous(limits = c(2700000, 6500000)) +
+  scale_y_continuous(limits = c(1380000, 5300000)) +
   geom_sf_text(aes(label = OBS_VALUE),
                colour = "black",
                size = 10,
