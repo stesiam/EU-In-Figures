@@ -29,8 +29,8 @@ colnames(eu_map)[1] = "geo"
 eu_map  %>% 
   ggplot() +
   geom_sf() +
-  scale_x_continuous(limits = c(2800000, 7150000)) +
-  scale_y_continuous(limits = c(1380000, 5300000)) 
+  scale_x_continuous(limits = c(2700000, 6500000)) +
+  scale_y_continuous(limits = c(1380000, 5300000))
 ## Add observations
 
 expenditure_rd <- read_csv("EIF-2/expenditure_rd.csv") %>%
