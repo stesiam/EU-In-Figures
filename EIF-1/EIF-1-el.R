@@ -7,18 +7,12 @@ library(showtext)
 library(readr)
 library(dplyr)
 library(grid)
-library(glue)
+
 
 ## Add fonts
 
 font_add_google("Righteous", family = "clim")
 font_add_google("Montserrat", family = "mont")
-
-sysfonts::font_add('fb', '/home/stelios/Downloads/fontawesome-free-6.7.2-desktop/otfs/Font Awesome 6 Brands-Regular-400.otf')
-sysfonts::font_add('fs', '/home/stelios/Downloads/fontawesome-free-6.7.2-desktop/otfs/Font Awesome 6 Free-Solid-900.otf')
-
-showtext_auto()
-showtext::showtext_opts()
 
 showtext_auto()
 
@@ -32,11 +26,11 @@ eu_map <- st_transform(eu_map, crs = 3035)
 #   dplyr::filter((EU_STAT == "T" | EFTA_STAT == "T") | (CNTR_ID == "RU" | CNTR_ID =="TR" | CNTR_ID == "UA")) %>%
 #   select(CNTR_ID)
 
-
 colnames(eu_map)[1] = "geo"
 
 eu_map = eu_map |>
   dplyr::filter(geo != "GL")
+
 
 ## Add observations
 
@@ -61,8 +55,10 @@ merged_dataset = merged_dataset |>
     .default = OBS_VALUE
   ))
 
-sources = glue("<b>Sources:</b> Eurostat & World Bank<br><b>Visualization: <span style='font-family:fb;'  >&#xf09b;</span> stesiam | <span style='font-family:fb;'  >&#xe671;</span> stesiam")
 # Visualization
+
+sources = glue("<b>Πηγή:</b> Eurostat & World Bank<br><b>Γράφημα: <span style='font-family:fb;'  >&#xf09b;</span> stesiam | <span style='font-family:fb;'  >&#xe671;</span> stesiam")
+
 
 bg_gradient <- grid::linearGradient(colours = rev(MetBrewer::met.brewer("Cross")[7:8]))
 
@@ -70,6 +66,7 @@ map = ggplot2::ggplot(data = merged_dataset) +
   geom_sf(aes(fill = OBS_VALUE)) +
   scale_x_continuous(limits = c(2550000, 7000000)) +
   scale_y_continuous(limits = c(1250000, 5600000)) +
+  #geom_sf_text(data = merged_dataset, aes(label = round(OBS_VALUE,1)), color = "black", size = 12,fontface = "bold", family = "mont")+
   geom_sf_text(data = merged_dataset |> dplyr::filter(geo == "IS"),
                aes(label = OBS_VALUE),
                colour = "black",
@@ -337,10 +334,11 @@ map = ggplot2::ggplot(data = merged_dataset) +
     panel.border = element_blank(),
     plot.background = element_rect(fill = bg_gradient, color = "transparent"),
     panel.background = element_rect(fill = "transparent", color = NA)
-)
+  )
 
-# Title text
-title_text <- "Unemployment (%) in Europe"
+
+
+title_text <- "Ανεργία (%) στην Ευρώπη"
 
 # Create the text grob
 title_grob_text <- textGrob(title_text,
@@ -360,7 +358,7 @@ final_plot <- map +
 
 
 ggsave(
-  filename = "EIF-1/EIF-1.png",
+  filename = "EIF-1/EIF-1-el.png",
   height = 8.8,
   width = 9,
   plot = final_plot,
