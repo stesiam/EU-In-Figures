@@ -52,7 +52,7 @@ merged_dataset = left_join(eu_map, expenditure_rd, by = "geo")
 
 bg_gradient <- grid::linearGradient(colours = rev(MetBrewer::met.brewer("Cross")[7:8]))
 
-sources = glue("<b>Sources:</b> Eurostat & World Bank<br><b>Visualization:</b> <span style='font-family:fb;'  >&#xf09b;</span> stesiam | <span style='font-family:fb;'  >&#xe671;</span> stesiam")
+sources = glue("<b>Δεδομένα:</b> Eurostat & World Bank<br><b>Γράφημα:</b> <span style='font-family:fb;'  >&#xf09b;</span> stesiam | <span style='font-family:fb;'  >&#xe671;</span> stesiam")
 
 
 # Visualization
@@ -330,7 +330,7 @@ map = ggplot2::ggplot(data = merged_dataset) +
     panel.background = element_rect(fill = "transparent", color = NA)
   )
 
-title_text <- "R&D Expenditure (% GDP)"
+title_text <- "Δαπάνες Έρευνας & Ανάπτυξης (% ΑΕΠ)"
 
 # Create the text grob
 title_grob_text <- textGrob(title_text,
@@ -341,20 +341,19 @@ grob <- rectGrob(gp = gpar(fill = "yellow4",col =NA))
 # Adjust the annotation size relative to map coordinates
 final_plot <- map +
   annotation_custom(grob, 
-                    xmin = 2550000, xmax = 4500000, 
+                    xmin = 2550000, xmax = 5000000, 
                     ymin = 5100000, ymax = 5400000) +
   annotation_custom(title_grob_text, 
-                    xmin = 2550000, xmax = 4500000, 
+                    xmin = 2550000, xmax = 5000000, 
                     ymin = 5200000, ymax = 5300000)
 
 
 
 ggsave(
-  filename = "EIF-2/EIF-2.png",
+  filename = "EIF-2/EIF-2-el.png",
   height = 8.8,
   width = 9,
   plot = final_plot,
   device = "png",
   dpi = 300)
-
 
